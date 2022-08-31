@@ -1,6 +1,7 @@
 #0x00 Shell Basics
 
 This project contains the shell scripts to do the following:
+
 0. Print absolute path name of current working directory.
 1. Display contents list of the current directory.
 2. Change working directory to user's home directory.
