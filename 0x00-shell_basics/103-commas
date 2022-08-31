@@ -1,0 +1,2 @@
+#!/bin/bash
+ls -la -m -p -v -X -nl -map
