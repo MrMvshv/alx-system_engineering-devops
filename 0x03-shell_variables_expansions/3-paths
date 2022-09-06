@@ -1,1 +1,2 @@
 #!/bin/bash
+echo $((1+$(printenv PATH | grep -o ':/' | wc -l)))
