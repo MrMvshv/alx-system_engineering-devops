@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script is displaying "Best School" 10 times and luck
+fizz=1
+while [ $fizz -le 100 ]
+do
+	echo $fizz
+	((fizz++))
+done
