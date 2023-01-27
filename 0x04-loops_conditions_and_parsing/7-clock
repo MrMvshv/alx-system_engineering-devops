@@ -2,7 +2,7 @@
 # This script is displaying "Best School" 10 times and luck
 min=0
 hr=0
-while [ $hr -lt 24 ]
+while [ $hr -lt 13 ]
 do
 	echo "Hour: $hr"
 	min=1
@@ -13,4 +13,3 @@ do
 	done
 	((hr++))
 done
-echo "Hour: $hr"
