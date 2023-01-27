@@ -13,3 +13,4 @@ do
 	done
 	((hr++))
 done
+echo "Hour: $hr"
