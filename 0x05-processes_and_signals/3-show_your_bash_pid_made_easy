@@ -3,4 +3,4 @@
 # shellcheck disable=SC2009
 # User oriented format
 # Show process hierarchy
-ps -auxf | grep "bash"
+pgrep -lx bash
