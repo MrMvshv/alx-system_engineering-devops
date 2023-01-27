@@ -3,6 +3,17 @@
 fizz=1
 while [ $fizz -le 100 ]
 do
-	echo $fizz
+	if [ $(($fizz % 3)) -eq 0 ] && [ $(($fizz % 5)) -eq 0 ]
+	then
+		echo "FizzBuzz"
+	elif [ $(($fizz % 3)) -eq 0 ]
+	then
+		echo "Fizz"
+	elif [ $(($fizz % 5)) -eq 0 ]
+	then
+		echo "Buzz"
+	else
+		echo $fizz
+	fi
 	((fizz++))
 done
