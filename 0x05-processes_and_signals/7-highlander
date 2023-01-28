@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# This script represents infinity
+handle_sigterm() {
+ echo "I am invincible!!!" 
+}
+while true; do
+ trap handle_sigterm SIGTERM
+ echo "To infinity and beyond"
+ sleep 2
+done
