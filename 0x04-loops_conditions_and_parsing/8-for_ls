@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script is displaying content of current dir
+# In list format
+#only part of the name after the first dash is displayed
+ ls -1 | sed 's/^[0-9]*-//'
