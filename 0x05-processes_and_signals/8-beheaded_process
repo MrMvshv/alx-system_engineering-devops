@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This script stops 4-infinity without using kill
+pkill -f -9 7-highlander
