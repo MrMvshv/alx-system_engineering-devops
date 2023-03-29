@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#configures ubuntu machine to install nginx, listen:80, serve page
+
+apt-get update
+apt-get install -y nginx
+
+#listen on 80
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+
+#create "Hello World" page to serve
+echo hello world > /var/www/html/index.html
+
+service nginx restart
