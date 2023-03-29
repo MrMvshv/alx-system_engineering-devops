@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #configures ubuntu machine to install nginx, listen:80, serve page
 
-apt-get update
-apt-get install -y nginx
+sudo apt-get update
+sudo apt-get install -y nginx
 
 #listen on 80
 sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
