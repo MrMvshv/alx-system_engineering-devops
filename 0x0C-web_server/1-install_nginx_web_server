@@ -10,4 +10,4 @@ sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/defa
 #create "Hello World" page to serve
 echo hello world > /var/www/html/index.html
 
-service nginx restart
+service nginx start
