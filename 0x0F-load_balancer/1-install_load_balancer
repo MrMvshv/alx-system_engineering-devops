@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# configures server with HAproxy round robin load balancer
+
+apt-get -y update
+apt-get -y install software-properties-common
+add-apt-repository ppa:vbernat/haproxy-2.6 -y
+apt update -y
+apt-get -y install haproxy -y
+
+#configure haproxy with round robin
+cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+
+cat <<EOT >> /etc/haproxy/haproxy.cfg
+frontend mv-frontend
+    bind *:80
+    mode http
+    default_backend servers
+
+backend servers
+    mode http
+    balance roundrobin
+    server 116532-web-01 35.175.104.175:80
+    server 116532-web-02 34.224.5.166:80
+EOT
+
+#enable start by init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+#restart haproxy
+service haproxy restart
