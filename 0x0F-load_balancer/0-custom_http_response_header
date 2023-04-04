@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# configures new ubuntu server with a custom response header
+
+sudo apt-get -y update
+sudo apt-get -y install nginx
+
+sudo ufw allow 'Nginx HTTP'
+
+sudo mkdir -p /var/www/html
+sudo chmod -R 755 /var/www
+
+#create "Hello World" page to serve
+echo 'Hello World!' | sudo tee /var/www/html/index.html
+
+#custom 404 page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+#server config
+# create a redirection for our website
+sudo sed -i '/server_name _;/a \	location /redirect_me {\n		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n	}' /etc/nginx/sites-available/default
+
+# Configure Nginx to use the custom 404 page
+sudo sed -i '/server_name _;/a \        error_page 404 /custom_404.html;\n        location = /custom_404.html {\n                internal;\n        }' /etc/nginx/sites-available/default
+
+HOST=$(hostname)
+# Add custom header configuration to Nginx
+sudo sed -i "/^http {/a \    add_header X-Served-By $HOST;" /etc/nginx/nginx.conf
+#restart server
+sudo service nginx restart
