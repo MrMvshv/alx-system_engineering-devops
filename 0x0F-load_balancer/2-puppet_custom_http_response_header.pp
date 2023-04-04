@@ -1,11 +1,5 @@
 # Install and configure Nginx with a custom response header
 
-# add nginx
-exec { 'add nginx':
-  command => 'sudo add-apt-repository ppa:nginx/stable',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-}
-
 # update software packages list
 exec { 'update packages':
   command => 'apt-get update',
@@ -15,66 +9,47 @@ exec { 'update packages':
 # install nginx
 package { 'nginx':
   ensure  => 'installed',
+  name    => 'nginx'
+  require => Exec['update packages'],
 }
 
-# allow HTTP
-exec { 'allow HTTP':
-  command => "ufw allow 'Nginx HTTP'",
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-  onlyif  => '! dpkg -l nginx | egrep \'îi.*nginx\' > /dev/null 2>&1',
-}
-
-# Create the web root directory and set permissions
-file { '/var/www/html':
-  ensure => directory,
-  owner  => 'www-data',
-  group  => 'www-data',
-  mode   => '0755',
-}
-
-# Create "Hello World" page to serve
+# Create the hello world page
 file { '/var/www/html/index.html':
-  content => 'Hello World!\n',
-  owner   => 'www-data',
-  group   => 'www-data',
-  mode    => '0644',
-}
-
-# Create custom 404 page
-file { '/var/www/html/404.html':
-  content => "Ceci n'est pas une page",
-  owner   => 'www-data',
-  group   => 'www-data',
-  mode    => '0644',
+  ensure  => present,
+  path    => '/var/www/html/index.html',
+  content => 'Hello World!\n'
+  require => Package['nginx']
 }
 
 # Create redirection for website
-exec { 'create-nginx-redirection':
-  command => 'sed -i "/server_name _;/a \        location /redirect_me {\n       return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n        }" /etc/nginx/sites-available/default',
-  path    => ['/usr/bin', '/usr/sbin'],
-  notify  => Service['nginx'],
+file_line { 'redirect':
+  ensure  => 'present',
+  path    => '/etc/nginx/sites-available/default',
+  after   => 'listen 80 default_server;',
+  line    => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
   require => Package['nginx'],
 }
 
 # Configure Nginx to use the custom 404 page
-exec { 'create-nginx-404':
-  command => 'sed -i "/server_name _;/a \        error_page 404 /custom_404.html;\n        location = /custom_404.html {\n                internal;\n        }" /etc/nginx/sites-available/default',
-  path    => ['/usr/bin', '/usr/sbin'],
-  notify  => Service['nginx'],
+file_line { '404_page':
+  ensure  => 'present',
+  path    => '/etc/nginx/sites-available/default',
+  after   => 'server_name _;',
+  line    => "error_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\tinternal;\n\t}"
   require => Package['nginx'],
 }
 
 # Add custom header configuration to Nginx
-exec { 'add-nginx-custom-header':
-  command => "sed -i '/^http {/a \\    add_header X-Served-By $hostname;' /etc/nginx/nginx.conf",
-  path    => ['/usr/bin', '/usr/sbin'],
-  notify  => Service['nginx'],
+file_line { 'Header':
+  ensure  => 'present',
+  path    => '/etc/nginx/sites-available/default',
+  after   => 'listen 80 default_server;',
+  line    => 'add_header X-Served-By $hostname;',
   require => Package['nginx'],
 }
 
 # Restart Nginx service
 service { 'nginx':
   ensure => running,
-  enable => true,
-  require => [Exec['add nginx'], Exec['update packages'], Package['nginx'],Exec['allow HTTP'], File['/var/www/html'], File['/var/www/html/index.html'], File['/var/www/html/404.html'], Exec['create-nginx-redirection'], Exec['create-nginx-404'], Exec['add-nginx-custom-header']],
+  require => Package['nginx'],
 }
