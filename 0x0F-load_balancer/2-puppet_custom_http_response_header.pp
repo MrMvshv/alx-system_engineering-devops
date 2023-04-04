@@ -1,15 +1,27 @@
 # Install and configure Nginx with a custom response header
 
-# Install Nginx
-package { 'nginx':
-  ensure => installed,
+# add nginx
+exec { 'add nginx':
+  command => 'sudo add-apt-repository ppa:nginx/stable',
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }
 
-# Allow Nginx HTTP traffic
-firewall { '100 allow Nginx HTTP':
-  port   => 80,
-  proto  => tcp,
-  action => accept,
+# update software packages list
+exec { 'update packages':
+  command => 'apt-get update',
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+}
+
+# install nginx
+package { 'nginx':
+  ensure  => 'installed',
+}
+
+# allow HTTP
+exec { 'allow HTTP':
+  command => "ufw allow 'Nginx HTTP'",
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  onlyif  => '! dpkg -l nginx | egrep \'îi.*nginx\' > /dev/null 2>&1',
 }
 
 # Create the web root directory and set permissions
@@ -22,7 +34,7 @@ file { '/var/www/html':
 
 # Create "Hello World" page to serve
 file { '/var/www/html/index.html':
-  content => 'Hello World!',
+  content => 'Hello World!\n',
   owner   => 'www-data',
   group   => 'www-data',
   mode    => '0644',
@@ -64,5 +76,5 @@ exec { 'add-nginx-custom-header':
 service { 'nginx':
   ensure => running,
   enable => true,
-  require => [Package['nginx'], File['/var/www/html/index.html'], File['/var/www/html/404.html'], Exec['create-nginx-redirection'], Exec['create-nginx-404'], Exec['add-nginx-custom-header']],
+  require => [Exec['add nginx'], Exec['update packages'], Package['nginx'],Exec['allow HTTP'], File['/var/www/html'], File['/var/www/html/index.html'], File['/var/www/html/404.html'], Exec['create-nginx-redirection'], Exec['create-nginx-404'], Exec['add-nginx-custom-header']],
 }
