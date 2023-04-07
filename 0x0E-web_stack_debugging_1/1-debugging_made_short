@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Debugging a server in an ubuntu container, process explained in README
-sed -i 's/listen 8080 default_server;/listen 80 default_server;/' /etc/nginx/sites-enabled/default
-sed -i 's/listen \[::\]:8080 default_server ipv6only=on;/listen \[::\]:80 default_server ipv6only=on;/g' /etc/nginx/sites-enabled/default
-service nginx restart
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx start
+pkill -x nginx
