@@ -2,4 +2,4 @@
 # Debugging a server in an ubuntu container, process explained in README
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 service nginx start
-pkill -x nginx
+kill "$(pgrep 'nginx' | head -1)"
