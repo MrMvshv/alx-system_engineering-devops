@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Displays information about subdomains
+
+subdomain_info () {
+  domain=$1
+  subdomain=$2
+
+  record=$(dig "$subdomain"."$domain" | grep -A1 'ANSWER SECTION:')
+
+  r_type=$(echo "$record" | awk 'NR==2 {print $4}')
+  ip=$(echo "$record" | awk 'NR==2 {print $5}')
+
+  echo "The subdomain $subdomain is a $r_type record and points to $ip"
+}
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 domain [subdomain]"
+  exit 1
+fi
+
+if [ -z "$2" ]; then
+  for sub in www lb-01 web-01 web-02; do
+    subdomain_info "$1" "$sub"
+  done
+else
+  subdomain_info "$1" "$2"
+fi
