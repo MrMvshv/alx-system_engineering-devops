@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #runs nginx as the user nginx
 chown -R nginx:nginx /etc/nginx /var/log/nginx
-chmod 644 /etc/nginx/nginx.conf
+chown 755 /etc/nginx/nginx.conf
 sed -i 's/listen 80 default_server;/listen 8080 default_server;/' /etc/nginx/sites-enabled/default
 sed -i 's/listen [::]:80 default_server ipv6only=on;/listen [::]:8080 default_server ipv6only=on;/' /etc/nginx/sites-enabled/default
 pkill apache2
