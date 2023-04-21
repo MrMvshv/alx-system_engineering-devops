@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 #checks the user passed as argument
-su "$1"
-whoami
+su -c whoami "$1"
