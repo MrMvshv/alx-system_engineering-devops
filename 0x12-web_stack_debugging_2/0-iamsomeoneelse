@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 #checks the user passed as argument
-sudo runuser -l "$1" -c 'whoami'
+su "$1"
+whoami
