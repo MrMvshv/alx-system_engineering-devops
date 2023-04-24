@@ -1,20 +1,19 @@
 #!/usr/bin/python3
-"""fetches information from JSONplaceholder API and exports to JSON"""
-
+"""Exports to-do list information for a given employee ID to JSON format."""
 import json
 import requests
-from sys import argv
+import sys
 
+if __name__ == "__main__":
+    user_id = sys.argv[1]
+    url = "https://jsonplaceholder.typicode.com/"
+    user = requests.get(url + "users/{}".format(user_id)).json()
+    username = user.get("username")
+    todos = requests.get(url + "todos", params={"userId": user_id}).json()
 
-if __name__ == '__main__':
-    link = 'https://jsonplaceholder.typicode.com/'
-    data = requests.get(link + 'users/{}'.format(argv[1])).json()
-
-    u_tasks = requests.get(link + 'todos', params={'userId': argv[1]}).json()
-
-    with open(f"{argv[1]}.json", 'w') as json_file:
-        json.dump({argv[1]: [{
-            "task": t.get('title'),
-            "completed": t.get('completed'),
-            "username": data.get('username')
-        } for t in u_tasks]}, json_file)
+    with open("{}.json".format(user_id), "w") as jsonfile:
+        json.dump({user_id: [{
+                "task": t.get("title"),
+                "completed": t.get("completed"),
+                "username": username
+            } for t in todos]}, jsonfile)
