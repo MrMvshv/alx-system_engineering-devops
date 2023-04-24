@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Makes a GET request to a REST API"""
+""""Exports to-do list information for a given employee ID to CSV format.""
 import requests
 from sys import argv
 
