@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-""" Makes a GET request to a REST API.
-exports in json format.
-"""
+""" Makes a GET request to a REST API."""
 import requests
 import json
 from sys import argv
