@@ -2,8 +2,8 @@
 """Makes a GET request to a REST API.
 exports data in JSON format.
 """
-import requests
 import json
+import requests
 
 
 if __name__ == '__main__':
