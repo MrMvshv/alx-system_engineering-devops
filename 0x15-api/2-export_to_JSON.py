@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees.
-export the data in json format.
-"""
+""" Makes a GET request to a REST API"""
 import json
 import requests
 from sys import argv

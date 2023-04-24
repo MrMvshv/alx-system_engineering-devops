@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""Gets data from a REST API
-Exports data in the CSV format.
-"""
+""" Makes a GET request to a REST API"""
 import requests
 from sys import argv
 
