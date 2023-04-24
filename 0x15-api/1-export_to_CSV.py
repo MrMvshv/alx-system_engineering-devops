@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Exports to-do list information for a given employee ID to CSV format."""
+"""fetches information from JSONplaceholder API and exports to CSV"""
 import csv
 import requests
 import sys
