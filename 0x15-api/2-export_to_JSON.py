@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Makes a GET request to a REST API."""
+"""Accessing a REST API for todo lists of employees"""
 import requests
 import json
 from sys import argv
