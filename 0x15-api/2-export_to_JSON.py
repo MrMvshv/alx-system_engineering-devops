@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Exports to-do list information for a given employee ID to JSON format."""
+"""fetches information from JSONplaceholder API and exports to JSON"""
+
 import json
 import requests
 from sys import argv
