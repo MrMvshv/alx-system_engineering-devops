@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-""" a script to retrieve the no of subs on a subreddit."""
+"""no of subs on a subreddit."""
 
 import requests
 
