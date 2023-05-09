@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-"""Some random doc for testing"""
+"""retrieve top ten hot topics per subreddit"""
 import requests
 
 
 def top_ten(subreddit):
-    """function random doc"""
+    """get top ten hot topics"""
 
     url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
     headers = {"User-Agent": 'My agent'}
