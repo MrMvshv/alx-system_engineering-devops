@@ -4,10 +4,11 @@
 import requests
 
 
-def recurse(subreddit, hot_list=[]):
+def recurse(subreddit, hot_list=[], after=None):
     """returns a list containing the titles of all hot articles"""
 
-    url = "https://www.reddit.com/r/{}/hot.json?limit=100".format(subreddit)
+    url = "https://www.reddit.com/r/{}/hot.json?limit=50&after={}"
+    .format(subreddit, after)
     headers = {"User-Agent": "My agent"}
 
     response = requests.get(url, headers=headers, allow_redirects=False)
@@ -25,7 +26,7 @@ def recurse(subreddit, hot_list=[]):
 
         after = data["data"]["after"]
         if after:
-            return recurse(subreddit, hot_list=hot_list)
+            return recurse(subreddit, hot_list=hot_list, after)
         else:
             return hot_list
 
