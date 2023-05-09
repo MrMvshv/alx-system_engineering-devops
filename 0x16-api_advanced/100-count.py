@@ -5,6 +5,8 @@ import requests
 
 
 def count_words(subreddit, word_list, counts=None):
+    """prints a sorted count of given keywords"""
+
     if counts is None:
         counts = {}
 
