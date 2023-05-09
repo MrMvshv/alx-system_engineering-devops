@@ -10,8 +10,8 @@ def count_words(subreddit, word_list, counts=None):
     if counts is None:
         counts = {}
 
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    url = "https://www.reddit.com/r/{}/hot.json?limit=100".format(subreddit)
+    headers = {"User-Agent": "My agent"}
 
     response = requests.get(url, headers=headers, allow_redirects=False)
 
@@ -21,7 +21,7 @@ def count_words(subreddit, word_list, counts=None):
         if not posts:
             sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
             for word, count in sorted_counts:
-                print(f"{word.lower()}: {count}")
+                print("{}: {}".format(word.lower(), count))
 
         for post in posts:
             title = post["data"]["title"]
