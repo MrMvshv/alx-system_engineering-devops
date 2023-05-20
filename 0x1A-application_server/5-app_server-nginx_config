@@ -58,7 +58,7 @@ server {
 
         # content from web_dynamic/2-hbnb.py on port 5003
         location / {
-                proxy_pass http://localhost:5003;
+                proxy_pass http://localhost:5003/2-hbnb;
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
         }
